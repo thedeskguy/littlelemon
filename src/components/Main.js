@@ -28,6 +28,7 @@ export default function Main() {
                     <p><strong>Order a delivery 🚚</strong></p>
                 </article>
             </section>
+            <button className="button">Reserve a Table</button>
         </main>
     )
 }
