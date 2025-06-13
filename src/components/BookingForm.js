@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { submitAPI } from "../api"; // import local mock API
 
-function BookingForm({ availableTimes, dispatchTimes }) {
+function BookingForm({ availableTimes, dispatchTimes, submitForm }) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [guests, setGuests] = useState(1);
@@ -10,26 +11,32 @@ function BookingForm({ availableTimes, dispatchTimes }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        const formData = { name, email, guests, date, time };
+
         if (!name || !email || !date || !time || guests < 1) {
             alert("Please fill in all fields correctly.");
             return;
         }
-
-        console.log("Booking submitted:", { name, email, guests, date, time });
-        setSubmitted(true);
-
-        // Reset form
-        setName("");
-        setEmail("");
-        setGuests(1);
-        setDate("");
-        setTime("");
+        submitForm(formData);
+        // const success = submitAPI(formData);
+        // if (success) {
+        //     setSubmitted(true);
+        //     // Reset form
+        //     setName("");
+        //     setEmail("");
+        //     setGuests(1);
+        //     setDate("");
+        //     setTime("");
+        // } else {
+        //     alert("Something went wrong. Please try again.");
+        // }
     };
 
     const handleDateChange = (e) => {
         const selectedDate = e.target.value;
         setDate(selectedDate);
-        dispatchTimes({ type: "UPDATE_TIMES", date: selectedDate }); // Trigger update
+        dispatchTimes({ type: "UPDATE_TIMES", date: selectedDate });
     };
 
     return (

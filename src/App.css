@@ -290,3 +290,13 @@ footer {
   font-weight: bold;
   text-align: center;
 }
+
+.confirmation-page {
+  max-width: 600px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background-color: #fefefe;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
