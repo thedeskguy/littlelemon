@@ -280,6 +280,13 @@ footer {
   box-shadow: 0 0 0 3px rgba(244, 206, 20, 0.3);
 }
 
+.error {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
 .confirmation-message {
   background-color: #d4edda;
   color: #155724;

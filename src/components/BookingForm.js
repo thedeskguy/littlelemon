@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { submitAPI } from "../api"; // import local mock API
+import { submitAPI } from "../api";
 
 function BookingForm({ availableTimes, dispatchTimes, submitForm }) {
     const [name, setName] = useState("");
@@ -7,31 +7,30 @@ function BookingForm({ availableTimes, dispatchTimes, submitForm }) {
     const [guests, setGuests] = useState(1);
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
-    const [submitted, setSubmitted] = useState(false);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    // Track if field was touched
+    const [touched, setTouched] = useState({
+        name: false,
+        email: false,
+        guests: false,
+        date: false,
+        time: false,
+    });
 
-        const formData = { name, email, guests, date, time };
-
-        if (!name || !email || !date || !time || guests < 1) {
-            alert("Please fill in all fields correctly.");
-            return;
-        }
-        submitForm(formData);
-        // const success = submitAPI(formData);
-        // if (success) {
-        //     setSubmitted(true);
-        //     // Reset form
-        //     setName("");
-        //     setEmail("");
-        //     setGuests(1);
-        //     setDate("");
-        //     setTime("");
-        // } else {
-        //     alert("Something went wrong. Please try again.");
-        // }
+    const handleBlur = (field) => {
+        setTouched({ ...touched, [field]: true });
     };
+
+    // Validation logic
+    const errors = {
+        name: name.trim() === "" ? "Name is required" : "",
+        email: !email.includes("@") ? "Invalid email" : "",
+        guests: guests < 1 ? "Must be at least 1 guest" : "",
+        date: date === "" ? "Date is required" : "",
+        time: time === "" ? "Time is required" : "",
+    };
+
+    const isFormValid = Object.values(errors).every((err) => err === "");
 
     const handleDateChange = (e) => {
         const selectedDate = e.target.value;
@@ -39,35 +38,48 @@ function BookingForm({ availableTimes, dispatchTimes, submitForm }) {
         dispatchTimes({ type: "UPDATE_TIMES", date: selectedDate });
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const formData = { name, email, guests, date, time };
+
+        if (!isFormValid) {
+            alert("Please fix the errors before submitting.");
+            return;
+        }
+
+        submitForm(formData); // delegate to Main
+    };
+
     return (
         <section className="form-container">
             <h2>Reserve Your Table</h2>
 
-            {submitted && (
-                <div className="confirmation-message">
-                    🎉 Thank you, {name}! Your reservation for {guests} guest(s) on {date} at {time} has been received.
-                </div>
-            )}
-
             <form onSubmit={handleSubmit} className="booking-form">
+                {/* Name */}
                 <label htmlFor="res-name">Full Name</label>
                 <input
                     type="text"
                     id="res-name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    onBlur={() => handleBlur("name")}
                     required
                 />
+                {touched.name && errors.name && <p className="error">{errors.name}</p>}
 
+                {/* Email */}
                 <label htmlFor="res-email">Email</label>
                 <input
                     type="email"
                     id="res-email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    onBlur={() => handleBlur("email")}
                     required
                 />
+                {touched.email && errors.email && <p className="error">{errors.email}</p>}
 
+                {/* Guests */}
                 <label htmlFor="res-guests">Number of Guests</label>
                 <input
                     type="number"
@@ -75,24 +87,31 @@ function BookingForm({ availableTimes, dispatchTimes, submitForm }) {
                     value={guests}
                     min="1"
                     max="10"
-                    onChange={(e) => setGuests(e.target.value)}
+                    onChange={(e) => setGuests(Number(e.target.value))}
+                    onBlur={() => handleBlur("guests")}
                     required
                 />
+                {touched.guests && errors.guests && <p className="error">{errors.guests}</p>}
 
+                {/* Date */}
                 <label htmlFor="res-date">Choose Date</label>
                 <input
                     type="date"
                     id="res-date"
                     value={date}
                     onChange={handleDateChange}
+                    onBlur={() => handleBlur("date")}
                     required
                 />
+                {touched.date && errors.date && <p className="error">{errors.date}</p>}
 
+                {/* Time */}
                 <label htmlFor="res-time">Choose Time</label>
                 <select
                     id="res-time"
                     value={time}
                     onChange={(e) => setTime(e.target.value)}
+                    onBlur={() => handleBlur("time")}
                     required
                 >
                     <option value="">-- Select a time --</option>
@@ -100,8 +119,12 @@ function BookingForm({ availableTimes, dispatchTimes, submitForm }) {
                         <option key={t} value={t}>{t}</option>
                     ))}
                 </select>
+                {touched.time && errors.time && <p className="error">{errors.time}</p>}
 
-                <button className="button" type="submit">Book Now</button>
+                {/* Submit */}
+                <button className="button" type="submit" disabled={!isFormValid}>
+                    Book Now
+                </button>
             </form>
         </section>
     );
