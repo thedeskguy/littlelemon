@@ -12,7 +12,7 @@ h4,
 h5,
 h6 {
   font-family: var(--font-heading);
-  color: var(--text-color);
+  /* color: var(--text-color); */
   margin-bottom: 0.5rem;
 }
 
@@ -28,7 +28,7 @@ h3 {
 p {
   font-size: 1rem;
   line-height: 1.5;
-  color: #444;
+
   margin: 0.5rem 0;
 }
 
@@ -47,7 +47,7 @@ body {
 }
 
 /* Header with logo */
-header {
+/* header {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,14 +56,39 @@ header {
 }
 
 /* Logo image */
-header img {
+/* header img {
   height: 50px;
+} */
+.hero {
+  display: flex;
+  justify-content: center;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  margin: 2rem auto;
+  max-width: 60%;
 }
+
+.hero img {
+  width: 300px;
+  border-radius: 10px;
+}
+
+.hero-text {
+  max-width: 500px;
+  color: white;
+}
+
 
 nav {
   padding: 1rem 2rem;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+nav img {
+  height: 35px;
 }
 
 nav ul {
@@ -122,6 +147,47 @@ main {
   width: 100%;
   border-radius: 8px;
 }
+
+.chicago {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem;
+  background-color: #edefee;
+  padding: 2rem;
+  border-radius: 10px;
+  margin: 2rem auto;
+  max-width: 1100px;
+}
+
+.chicago-text {
+  flex: 1;
+  min-width: 280px;
+}
+
+.chicago h2 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.chicago p {
+  color: #333;
+  line-height: 1.6;
+  margin: 0.5rem 0;
+}
+
+.chicago-image {
+  flex: 1;
+  min-width: 280px;
+}
+
+.chicago-image img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
 
 footer {
   padding: 1rem;
